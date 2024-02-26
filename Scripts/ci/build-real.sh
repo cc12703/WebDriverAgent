@@ -7,6 +7,7 @@ xcodebuild clean build-for-testing \
   -derivedDataPath $DERIVED_DATA_PATH \
   -scheme $SCHEME \
   -destination "$DESTINATION" \
+  -configuration Release \
   CODE_SIGNING_ALLOWED=NO ARCHS=arm64
 
 # Only .app is needed.
@@ -18,6 +19,7 @@ pushd $WD
 # XCUIAutomation.framework, XCUnit.framework
 rm -rf $SCHEME-Runner.app/Frameworks/XC*.framework
 
-zip -r $ZIP_PKG_NAME $SCHEME-Runner.app
+mkdir Payload && mv $SCHEME-Runner.app Payload/
+zip -r $ZIP_PKG_NAME Payload
 popd
 mv $WD/$ZIP_PKG_NAME ./

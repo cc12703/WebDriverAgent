@@ -9,6 +9,7 @@
 build/
 clang/
 DerivedData
+out/
 
 ## Various settings
 *.pbxuser
