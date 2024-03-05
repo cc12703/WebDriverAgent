@@ -14,6 +14,7 @@
 #import <WebDriverAgentLib/FBFailureProofTestCase.h>
 #import <WebDriverAgentLib/FBWebServer.h>
 #import <WebDriverAgentLib/XCTestCase.h>
+#import <WebDriverAgentLib/FBAuthorization.h>
 
 @interface UITestingUITests : FBFailureProofTestCase <FBWebServerDelegate>
 @end
@@ -36,6 +37,8 @@
   } else {
     [FBConfiguration disableScreenshots];
   }
+  
+  [FBAuthorization requstAddPhotosAuthorization];
   [super setUp];
 }
 

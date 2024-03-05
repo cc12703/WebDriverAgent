@@ -37,6 +37,8 @@
 {
   return
   @[
+    [[FBRoute POST:@"/saveMedia"] respondWithTarget:self action:@selector(handleSaveMeida:)],
+    [[FBRoute POST:@"/deleteAlbum"] respondWithTarget:self action:@selector(handleDeleteAlbum:)],
     [[FBRoute POST:@"/timeouts"] respondWithTarget:self action:@selector(handleTimeouts:)],
     [[FBRoute POST:@"/wda/homescreen"].withoutSession respondWithTarget:self action:@selector(handleHomescreenCommand:)],
     [[FBRoute POST:@"/wda/deactivateApp"] respondWithTarget:self action:@selector(handleDeactivateAppCommand:)],
@@ -86,6 +88,27 @@
 
 
 #pragma mark - Commands
+
++ (id<FBResponsePayload>)handleSaveMeida:(FBRouteRequest *)request
+{
+  NSError *error;
+  BOOL saveResult = [[XCUIDevice sharedDevice] fb_saveMedia:request.arguments[@"data"]
+                                                   type:request.arguments[@"type"]
+                                                  album:request.arguments[@"album"]
+                                                  error:&error];
+  return saveResult? FBResponseWithOK() : FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:error.description
+                                                                                          traceback:nil]);
+}
+
++ (id<FBResponsePayload>)handleDeleteAlbum:(FBRouteRequest *)request
+{
+  NSError *error;
+  BOOL saveResult = [[XCUIDevice sharedDevice] fb_deleteAlbum:request.arguments[@"album"]
+                                                  error:&error];
+  return saveResult? FBResponseWithOK() : FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:error.description
+                                                                                          traceback:nil]);
+}
+
 
 + (id<FBResponsePayload>)handleHomescreenCommand:(FBRouteRequest *)request
 {

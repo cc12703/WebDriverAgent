@@ -187,7 +187,31 @@ typedef NS_ENUM(NSUInteger, FBUIInterfaceAppearance) {
  @return YES if the simulated location has been successfully cleared
  */
 - (BOOL)fb_clearSimulatedLocation:(NSError **)error;
+
+
 #endif
+
+/**
+ Allows device save media to photos.
+ 
+ @param base64Data media to  base64 string.
+ @param type media type: [ "image", "video" ].
+ @param album custom photos album name, if album name is nil, the save to system common default album.
+ @param error there is an error, upon return contains an NSError object that save the problem.
+ @return YES if media save to photos sucees.
+ */
+- (BOOL)fb_saveMedia:(nonnull NSString *)base64Data
+                type:(nonnull NSString *)type
+               album:(nullable NSString *)album
+               error:(NSError *__autoreleasing*)error;
+/**
+ Allows device delete album photos from photos.
+ 
+ @param album need delete album name.
+ @param error there is an error, upon return contains an NSError object that delete the problem.
+ @return YES if album photos delete sucees.
+ */
+- (BOOL)fb_deleteAlbum:(nonnull NSString *)album error:(NSError*__autoreleasing*)error;
 
 @end
 

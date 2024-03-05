@@ -23,6 +23,7 @@
 #import "FBXCodeCompatibility.h"
 #import "FBXCTestDaemonsProxy.h"
 #import "XCUIDevice.h"
+#import "FBPhotos.h"
 
 static const NSTimeInterval FBHomeButtonCoolOffTime = 1.;
 static const NSTimeInterval FBScreenLockTimeout = 5.;
@@ -385,5 +386,17 @@ static bool fb_isLocked;
   return [FBXCTestDaemonsProxy clearSimulatedLocation:error];
 }
 #endif
+
+- (BOOL)fb_saveMedia:(nonnull NSString *)base64Data
+                type:(nonnull NSString *)type
+               album:(nullable NSString *)album
+               error:(NSError *__autoreleasing*)error
+{
+  return [FBPhotos saveMedia:base64Data type:type album:album error:error];
+}
+
+- (BOOL)fb_deleteAlbum:(nonnull NSString *)album error:(NSError*__autoreleasing*)error {
+  return [FBPhotos deleteAlbum:album error:error];
+}
 
 @end
