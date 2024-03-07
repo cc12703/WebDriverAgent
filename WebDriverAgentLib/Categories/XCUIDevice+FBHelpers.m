@@ -399,4 +399,8 @@ static bool fb_isLocked;
   return [FBPhotos deleteAlbum:album error:error];
 }
 
+- (NSInteger)fb_getPhotosNumberFromAlbum:(nonnull NSString *)album error:(NSError*__autoreleasing*)error {
+  return [FBPhotos getPhotosNumberFromAlbum:album error:error];
+}
+
 @end

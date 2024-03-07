@@ -39,6 +39,7 @@
   @[
     [[FBRoute POST:@"/saveMedia"] respondWithTarget:self action:@selector(handleSaveMeida:)],
     [[FBRoute POST:@"/deleteAlbum"] respondWithTarget:self action:@selector(handleDeleteAlbum:)],
+    [[FBRoute POST:@"/photosCount"] respondWithTarget:self action:@selector(handlePhotosCount:)],
     [[FBRoute POST:@"/timeouts"] respondWithTarget:self action:@selector(handleTimeouts:)],
     [[FBRoute POST:@"/wda/homescreen"].withoutSession respondWithTarget:self action:@selector(handleHomescreenCommand:)],
     [[FBRoute POST:@"/wda/deactivateApp"] respondWithTarget:self action:@selector(handleDeactivateAppCommand:)],
@@ -109,6 +110,13 @@
                                                                                           traceback:nil]);
 }
 
++ (id<FBResponsePayload>)handlePhotosCount:(FBRouteRequest *)request
+{
+  NSError *error;
+  NSInteger result = [[XCUIDevice sharedDevice] fb_getPhotosNumberFromAlbum:request.arguments[@"album"] error:&error];
+  return error == nil ? FBResponseWithObject(@(result)) : FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:error.description
+                                                                                          traceback:nil]);
+}
 
 + (id<FBResponsePayload>)handleHomescreenCommand:(FBRouteRequest *)request
 {

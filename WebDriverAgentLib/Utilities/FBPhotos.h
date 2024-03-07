@@ -21,9 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FBPhotos : NSObject
 
-+(BOOL) saveMedia: (nonnull NSData *)data type:(nonnull NSString *)type album: (nullable NSString *)albumName error:(NSError *__autoreleasing*)error;
++ (BOOL)saveMedia: (nonnull NSData *)data type:(nonnull NSString *)type album: (nullable NSString *)albumName error:(NSError *__autoreleasing*)error;
 
-+(BOOL) deleteAlbum: (nonnull NSString *)name error:(NSError *__autoreleasing*)error;
++ (BOOL)deleteAlbum: (nonnull NSString *)name error:(NSError *__autoreleasing*)error;
+
++ (NSInteger)getPhotosNumberFromAlbum: (nonnull NSString *)name error:(NSError *__autoreleasing*)error;
 
 @end
 

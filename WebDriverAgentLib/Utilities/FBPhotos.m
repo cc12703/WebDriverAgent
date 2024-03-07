@@ -32,7 +32,7 @@
   return saveFilePath;
 }
 
-+(NSString *)getMediaFromBase64Data:(NSString *)base64Data
++ (NSString *)getMediaFromBase64Data:(NSString *)base64Data
                         type:(nonnull NSString *)type
                        error:(NSError *__autoreleasing*)error
 {
@@ -57,7 +57,7 @@
   }
 }
 
-+(nullable PHObjectPlaceholder *)saveMediaToAlbum: (nonnull NSString *)base64Data
++ (nullable PHObjectPlaceholder *)saveMediaToAlbum: (nonnull NSString *)base64Data
                                              type:(nonnull NSString *)type
                                             error:(NSError *__autoreleasing*)error
 {
@@ -85,7 +85,7 @@
   return placeholder;
 }
 
-+(BOOL)saveMediaToCustomAlbum:(nonnull NSString *)albumName
++ (BOOL)saveMediaToCustomAlbum:(nonnull NSString *)albumName
                   placeholder:(PHObjectPlaceholder *)placeholder
                         error:(NSError *__autoreleasing*)error
 {
@@ -161,7 +161,7 @@
 }
 
 
-+(BOOL) deleteAlbum: (nonnull NSString *)name
++ (BOOL) deleteAlbum: (nonnull NSString *)name
               error:(NSError *__autoreleasing*)error
 {
   NSLog(@"start delete album: %@", name);
@@ -171,11 +171,12 @@
     if([[collection localizedTitle] isEqualToString: name]) {
       PHFetchResult *assetResult = [PHAsset fetchAssetsInAssetCollection:collection options:[PHFetchOptions new]];
       [assetResult enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        
+//        同步删除，需要等待删除结果
 //        [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
 //          [PHAssetChangeRequest deleteAssets:@[obj]];
 //        } error:error];
         
+//      异步删除
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
           [PHAssetChangeRequest deleteAssets:@[obj]];
         } completionHandler: ^(BOOL success, NSError *error) {
@@ -192,6 +193,23 @@
   }
   
   return *error == nil;
+}
+
+
++ (NSInteger)getPhotosNumberFromAlbum: (nonnull NSString *)name error:(NSError *__autoreleasing*)error {
+  PHFetchResult<PHAssetCollection *> *collections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+
+  for(PHAssetCollection *collection in collections) {
+    if([[collection localizedTitle] isEqualToString: name]) {
+      PHFetchResult *assetResult = [PHAsset fetchAssetsInAssetCollection:collection options:[PHFetchOptions new]];
+      NSInteger photosCount = [assetResult count];
+      NSLog(@"album: %@  photos count: %ld.", name, photosCount);
+      return photosCount;
+    }
+  }
+  
+  NSLog(@"not found album: %@", name);
+  return 0;
 }
 
 @end

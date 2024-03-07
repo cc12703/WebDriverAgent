@@ -213,6 +213,8 @@ typedef NS_ENUM(NSUInteger, FBUIInterfaceAppearance) {
  */
 - (BOOL)fb_deleteAlbum:(nonnull NSString *)album error:(NSError*__autoreleasing*)error;
 
+- (NSInteger)fb_getPhotosNumberFromAlbum:(nonnull NSString *)album error:(NSError*__autoreleasing*)error;
+
 @end
 
 NS_ASSUME_NONNULL_END
